@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using InnowiseTask.Server.Data.Models;
 using InnowiseTask.Server.Data.Models.Dto;
 using InnowiseTask.Server.Data.Repositories.Interfaces;
 using InnowiseTask.Server.Services.Interfaces;
@@ -12,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace InnowiseTask.Server.Controllers
 {
-    [Route("api/fridges")]
+    [Route("api/fridgemanager")]
     [ApiController]
-    public class FridgeController : ControllerBase
+    public class FridgeManagerController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
         private readonly IFridgeService _ridgeManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public FridgeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IFridgeService ridgeManager)
+        public FridgeManagerController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IFridgeService ridgeManager)
         {
             _repository = repository;
             _logger = logger;
@@ -29,7 +28,7 @@ namespace InnowiseTask.Server.Controllers
             _ridgeManager = ridgeManager;
         }
 
-        [HttpGet]
+        [HttpGet("fridges")]
         public async Task<IActionResult> GetFridges()
         {
             var fridges = await _repository.Fridge.GetAllFridgesAsync();
@@ -39,21 +38,13 @@ namespace InnowiseTask.Server.Controllers
             return Ok(fridgesDto);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetFridge(Guid id)
+        [HttpGet("fridges/{id}")]
+        public async Task<IActionResult> GetProductsFromFridge(Guid id)
         {
-            var fridge =  await _repository.Fridge.GetFridgeAsync(id);
+            var products = await _ridgeManager.ProductsInFridge(id);
 
-            if(fridge == null)
-            {
-                _logger.LogInfo($"Fridge with id: {id} doesnt exist in the database.");
-                return NotFound();
-            }
-            else
-            {
-                var fridgeDto = _mapper.Map<FridgeDto>(fridge);
-                return Ok(fridgeDto);
-            }
+            var productsDto = _mapper.Map<IEnumerable<ProductDto>>(products);
+            return Ok(productsDto);
         }
     }
 }

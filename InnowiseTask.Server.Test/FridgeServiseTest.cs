@@ -10,16 +10,18 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace InnowiseTask.Server.Test
-{
+{/// <summary>
+/// *Postman was used to test deleting
+/// </summary>
     public class FridgeServiceTest
     {
-        private readonly FridgeManager _serviceUnderTest;
+        private readonly FridgeService _serviceUnderTest;
         private readonly Mock<IRepositoryManager> _repositoryManagerMock = new();
-        private readonly ILoggerManager _logger;
+        private readonly Mock<ILoggerManager> _logger = new();
 
         public FridgeServiceTest()
         {
-            _serviceUnderTest = new FridgeManager(_repositoryManagerMock.Object, _logger);
+            _serviceUnderTest = new FridgeService(_repositoryManagerMock.Object, _logger.Object);
         }
 
         [Fact]
@@ -135,20 +137,23 @@ namespace InnowiseTask.Server.Test
         }
 
         [Fact]
-        public async Task RemoveProducts_RemoveOneProduct()
+        public async Task TakeProduct_ReduceQuantity()
         {
             //Arrange
-            var productId = new Guid("24D601BC-965F-457F-AE2E-5BF34AFCBA8B");
-            var fridgeId = new Guid("356C09B5-D03B-4D86-AABA-C59E6937C0CF");
-            _repositoryManagerMock.Setup(option => option.Product.GetProductsAsync(productId)).ReturnsAsync(TestConfiguration.Products.FirstOrDefault(p => p.Id == productId));
-            _repositoryManagerMock.Setup(option => option.Fridge.GetFridgeAsync(fridgeId)).ReturnsAsync(TestConfiguration.Fridges.FirstOrDefault(f => f.Id == fridgeId));
-            _repositoryManagerMock.Setup(option => option.FridgeProduct.RemoveFridgeProduct(TestConfiguration.FridgeProducts.Where(f => f.FridgeId == fridgeId).FirstOrDefault(p => p.ProductId == productId)));
+            var product = new Guid("E5F23484-9191-4101-9CED-60C771B367BF");
+            var fridge = new Guid("356C09B5-D03B-4D86-AABA-C59E6937C0CF");
+            int quantity = 3;
+            _repositoryManagerMock.Setup(option => option.Product.GetProductsAsync(product)).ReturnsAsync(TestConfiguration.Products.FirstOrDefault(p => p.Id == product));
+            _repositoryManagerMock.Setup(option => option.Fridge.GetFridgeAsync(fridge)).ReturnsAsync(TestConfiguration.Fridges.FirstOrDefault(f => f.Id == fridge));
+            _repositoryManagerMock.Setup(option => option.FridgeProduct.GetAllFridgeProductsAsync()).ReturnsAsync(TestConfiguration.FridgeProducts);
+            _logger.Setup(option => option.LogInfo($"Fridge: {fridge} contains less quantity of product than you want to take. Will take as much as there is and will remain 0"));
+            int expectedQuantity = 0;
 
             //Act
-            await _serviceUnderTest.RemoveProducts(productId, fridgeId);
+            var actual = await _serviceUnderTest.TakeProduct(product, fridge, quantity);
 
             //Assert
-            _repositoryManagerMock.Verify(option => option.FridgeProduct.RemoveFridgeProduct(TestConfiguration.FridgeProducts.Where(f => f.FridgeId == fridgeId).FirstOrDefault(p => p.ProductId == productId)));
+            Assert.Equal(actual, expectedQuantity);
         }
     }
 }

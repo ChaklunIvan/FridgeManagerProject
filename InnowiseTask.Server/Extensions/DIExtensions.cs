@@ -14,8 +14,8 @@ namespace InnowiseTask.Server.Extensions
         public static void AddRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-        public static void AddFridgeManager(this IServiceCollection services) =>
-            services.AddScoped<IFridgeManager, FridgeManager>();
+        public static void AddFridgeService(this IServiceCollection services) =>
+            services.AddScoped<IFridgeService, FridgeService>();
 
     }
 }

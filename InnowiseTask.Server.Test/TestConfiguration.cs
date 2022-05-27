@@ -9,14 +9,6 @@ namespace InnowiseTask.Server.Test
 {
     public static class TestConfiguration
     {
-        //public TestConfiguration(List<FridgeProduct> fridgeProducts, List<Product> products, List<Fridge> fridges)
-        //{
-        //    FridgeProducts = fridgeProducts;
-        //    Products = products;
-        //    Fridges = fridges;
-        //}
-
-
         public static List<Product> Products = new()
         {
             new Product

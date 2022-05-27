@@ -11,6 +11,5 @@ namespace InnowiseTask.Server.Data.Repositories.Interfaces
         Task<Fridge> GetFridgeAsync(Guid id);
         Fridge GetFridge(Guid id);
 
-
     }
 }

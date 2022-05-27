@@ -38,7 +38,7 @@ namespace InnowiseTask.Server
 
             services.AddLoggerService();
             services.AddRepositoryManager();
-            services.AddFridgeManager();
+            services.AddFridgeService();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
