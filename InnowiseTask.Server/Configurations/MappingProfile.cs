@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace InnowiseTask.Server.Configurations
 {
-    public class MappingProfile : Profile
+    public  class MappingProfile : Profile
     {
         public MappingProfile()
         {
@@ -13,9 +13,13 @@ namespace InnowiseTask.Server.Configurations
                 .ForMember(f => f.FullName,
                 opt => opt.MapFrom(r => string.Join(' ', r.Name, r.OwnerName)));
             CreateMap<Product, ProductDto>();
-                //.ForMember(p => p.Quantity,
-                //opt => opt.MapFrom(src => src.FridgeProducts.Select(s => s.Quantity)));
-
+            CreateMap<FridgeToUpdateDto, Fridge>();
+            CreateMap<FridgeProduct, FridgeProductDto>()
+                .ForMember(p => p.ProductName,
+                opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(f => f.FridgeName,
+                opt => opt.MapFrom(src => src.Fridge.Name));
         }
+
     }
 }

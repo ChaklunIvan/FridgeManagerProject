@@ -28,5 +28,10 @@ namespace InnowiseTask.Server.Data.Repositories
             return await GetAsync(id);
         }
 
+        //public Fridge UpdateFridge(Fridge fridge)
+        //{
+        //    Update(fridge);
+        //    return fridge;
+        //}
     }
 }

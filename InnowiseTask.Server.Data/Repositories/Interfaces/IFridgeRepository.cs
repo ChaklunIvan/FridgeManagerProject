@@ -10,6 +10,6 @@ namespace InnowiseTask.Server.Data.Repositories.Interfaces
         Task <IEnumerable<Fridge>> GetAllFridgesAsync();
         Task<Fridge> GetFridgeAsync(Guid id);
         Fridge GetFridge(Guid id);
-
+        //Fridge UpdateFridge(Guid fridgeId, Fridge fridge);
     }
 }
