@@ -35,7 +35,10 @@ namespace InnowiseTask.Server
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureSqlContext(Configuration);
+            services.AddAuthentication();
+            services.ConfigureIdnetity();
 
+            //Dependecy injection services;
             services.AddLoggerService();
             services.AddRepositoryManager();
             services.AddFridgeService();
@@ -68,6 +71,7 @@ namespace InnowiseTask.Server
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -6,6 +6,7 @@ using InnowiseTask.Server.Extensions;
 using InnowiseTask.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +19,14 @@ namespace InnowiseTask.Server.Controllers
     public class FridgeController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        private readonly IFridgeService _fridgeManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public FridgeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IFridgeService fridgeManager)
+        public FridgeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-            _fridgeManager = fridgeManager;
         }
 
         [HttpGet]
@@ -68,5 +67,6 @@ namespace InnowiseTask.Server.Controllers
 
             return Ok(updatedFridge);
         }
+
     }
 }

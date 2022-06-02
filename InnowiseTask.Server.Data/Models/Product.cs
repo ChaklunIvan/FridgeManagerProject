@@ -11,7 +11,7 @@ namespace InnowiseTask.Server.Data.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Product DefaultQuantity is a required field.")]
         public int? DefaultQuantity { get; set; }
-
+        public string Image { get; set; }
         public IList<FridgeProduct> FridgeProducts { get; set; }
     }
 }

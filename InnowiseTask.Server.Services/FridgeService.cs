@@ -266,18 +266,18 @@ namespace InnowiseTask.Server.Services
             }
 
             var fridgeProducts = await _repository.FridgeProduct.GetAllFridgeProductsAsync();
-            var fridgeToTake = fridgeProducts.FirstOrDefault(f => f.Fridge == fridge);
-            if (fridgeProducts == null && fridgeToTake == null)
+            var fridgeToTake = fridgeProducts.Where(f => f.Fridge == fridge).FirstOrDefault(p => p.ProductId == product.Id);
+            if (fridgeToTake == null)
             {
                 _logger.LogError($"Fridge: {fridge} is absent");
-                throw new NullReferenceException($"{fridgeProducts} is null");
+                throw new NullReferenceException($"{fridgeToTake} is null");
             }
-            if (quantity > fridgeProducts.FirstOrDefault(f => f.Fridge == fridge).Quantity)
+            if (quantity > fridgeToTake.Quantity)
             {
                 _logger.LogInfo($"Fridge: {fridge} contains less quantity of product than you want to take. Will take as much as there is and will remain 0");
             }
 
-            fridgeToTake.Quantity = -quantity;
+            fridgeToTake.Quantity -= quantity;
             if (fridgeToTake.Quantity < 0)
                 fridgeToTake.Quantity = 0;
 

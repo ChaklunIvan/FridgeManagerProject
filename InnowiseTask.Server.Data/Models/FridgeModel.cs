@@ -10,7 +10,6 @@ namespace InnowiseTask.Server.Data.Models
         [MaxLength(50, ErrorMessage = "Maximum length for the Name is 50 characters")]
         public string Name { get; set; }
         public int? Year { get; set; }
-
         public IList<Fridge> Fridges { get; set; }
     }
 }

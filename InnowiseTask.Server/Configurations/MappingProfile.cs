@@ -19,6 +19,7 @@ namespace InnowiseTask.Server.Configurations
                 opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(f => f.FridgeName,
                 opt => opt.MapFrom(src => src.Fridge.Name));
+            CreateMap<UserForRegistrationDto, User>();
         }
 
     }

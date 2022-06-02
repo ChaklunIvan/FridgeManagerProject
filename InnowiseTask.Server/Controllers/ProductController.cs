@@ -20,13 +20,11 @@ namespace InnowiseTask.Server.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IFridgeService _fridgeManager;
-        private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public ProductController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IFridgeService fridgeManager)
+        public ProductController(IRepositoryManager repository, IMapper mapper, IFridgeService fridgeManager)
         {
             _repository = repository;
-            _logger = logger;
             _mapper = mapper;
             _fridgeManager = fridgeManager;
         }
@@ -47,6 +45,7 @@ namespace InnowiseTask.Server.Controllers
 
             return Ok(productsDto);
         }
+
 
         [HttpPost("{id}")]
         public async Task<IActionResult> AddProductsToFridge(Guid fridgeId, Guid id)
@@ -86,6 +85,14 @@ namespace InnowiseTask.Server.Controllers
             await _fridgeManager.RemoveProducts(productsGuid, fridgeId);
 
             return Ok();
+        }
+
+        [HttpDelete("{id}/{quantity}")]
+        public async Task<IActionResult> TakeProductFromFridge(Guid fridgeId, Guid id, int quantity)
+        {
+            var actualQuantity = await _fridgeManager.TakeProduct(id, fridgeId, quantity);
+
+            return Ok(actualQuantity);
         }
     }
 }

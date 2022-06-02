@@ -1,10 +1,11 @@
 ﻿using InnowiseTask.Server.Data.Models;
 using InnowiseTask.Server.Data.Models.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace InnowiseTask.Server.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions options)
             : base(options)
@@ -17,12 +18,14 @@ namespace InnowiseTask.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<FridgeProduct>().HasKey(sc => new { sc.FridgeId, sc.ProductId });
 
             modelBuilder.ApplyConfiguration(new FridgeModelConfiguration());
-            //modelBuilder.ApplyConfiguration(new FridgeProductConfiguration());
             modelBuilder.ApplyConfiguration(new FridgeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
 
     }
