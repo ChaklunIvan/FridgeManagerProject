@@ -4,6 +4,7 @@ using InnowiseTask.Server.Data.Models.Dto;
 using InnowiseTask.Server.Data.Repositories.Interfaces;
 using InnowiseTask.Server.Extensions;
 using InnowiseTask.Server.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -45,7 +46,7 @@ namespace InnowiseTask.Server.Controllers
             return Ok(fridgesDto);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "Manager, Administrator")]
         public async Task<IActionResult> UpdateFridge(Guid id, [FromBody] FridgeToUpdateDto fridge)
         {
             if (fridge == null)

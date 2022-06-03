@@ -17,5 +17,7 @@ namespace InnowiseTask.Server.Extensions
         public static void AddFridgeService(this IServiceCollection services) =>
             services.AddScoped<IFridgeService, FridgeService>();
 
+        public static void AddAuthenticationService(this IServiceCollection services) =>
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
     }
 }

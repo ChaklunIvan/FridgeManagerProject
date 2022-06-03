@@ -3,6 +3,7 @@ using InnowiseTask.Server.Data.Models;
 using InnowiseTask.Server.Data.Models.Dto;
 using InnowiseTask.Server.Data.Repositories.Interfaces;
 using InnowiseTask.Server.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -46,8 +47,7 @@ namespace InnowiseTask.Server.Controllers
             return Ok(productsDto);
         }
 
-
-        [HttpPost("{id}")]
+        [HttpPost("{id}"), Authorize(Roles = "Manager, Administrator") ]
         public async Task<IActionResult> AddProductsToFridge(Guid fridgeId, Guid id)
         {
             var addedProducts = await _fridgeManager.AddProducts(id, fridgeId);
@@ -57,7 +57,7 @@ namespace InnowiseTask.Server.Controllers
             return Ok(fridgeProductsDto);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Manager, Administrator")]
         public async Task<IActionResult> AddProductsToFridge(Guid fridgeId, [FromBody] JsonElement productsId)
         {
             var productsGuid = JsonConvert.DeserializeObject<List<Guid>>(productsId.GetProperty($"productsId").ToString());
@@ -69,7 +69,7 @@ namespace InnowiseTask.Server.Controllers
             return Ok(fridgeProductsDto);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Manager, Administrator")]
         public async Task<IActionResult> RemoveProductsFromFridge(Guid fridgeId, Guid id)
         {
             await _fridgeManager.RemoveProducts(id, fridgeId);
@@ -77,7 +77,7 @@ namespace InnowiseTask.Server.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize(Roles = "Manager, Administrator")]
         public async Task<IActionResult> RemoveProductsFromFridge(Guid fridgeId, [FromBody] JsonElement productsId)
         {
             var productsGuid = JsonConvert.DeserializeObject<List<Guid>>(productsId.GetProperty($"productsId").ToString());
@@ -87,7 +87,7 @@ namespace InnowiseTask.Server.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}/{quantity}")]
+        [HttpDelete("{id}/{quantity}"), Authorize(Roles = "Manager, Administrator, User")]
         public async Task<IActionResult> TakeProductFromFridge(Guid fridgeId, Guid id, int quantity)
         {
             var actualQuantity = await _fridgeManager.TakeProduct(id, fridgeId, quantity);

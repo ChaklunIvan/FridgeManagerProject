@@ -18,6 +18,11 @@ namespace InnowiseTask.Server.Data.Models.Configurations
                 {
                     Name = "Administrator",
                     NormalizedName = "ADMINISTRATOR"
+                },
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
                 }
                 );
         }

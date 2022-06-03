@@ -35,14 +35,16 @@ namespace InnowiseTask.Server
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureSqlContext(Configuration);
+            services.AddAutoMapper(typeof(Startup));
             services.AddAuthentication();
             services.ConfigureIdnetity();
+            services.ConfigureJwt(Configuration);
 
             //Dependecy injection services;
             services.AddLoggerService();
             services.AddRepositoryManager();
             services.AddFridgeService();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAuthenticationService();
 
             services.AddControllers();
         }
